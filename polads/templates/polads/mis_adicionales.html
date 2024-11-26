@@ -1,0 +1,93 @@
+{% extends 'administracion/base.html' %}
+
+{% block content %}
+{% if user.profile.esta_autorizado == True %}
+
+<div class="container">
+  <div class="row">
+    <h3 align="center">{{ user.username }}</h3>
+    <p align="center">Adicionales</p>
+  </div>
+</div>
+
+<hr>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <h5 align="center">Menú</h5>
+        <hr>
+        <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        <h6 align="center">-<a href="{% url 'nuevo-adicional' %}"> Agregar Adicional</a></h6>
+        <br />
+      </div>
+
+      <div class="col-md-8 col-sm-8">
+        <h5 align="center"><br /><br />Estos son tus adicionales:</h5>
+      </div>
+
+    </div>
+</div>
+
+<br />
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-12 col-sm-12">
+      <table>
+        <tr>
+          <th><h6>Número</h6></th>
+          <th><h6>Nombre</h6></th>
+          <th><h6>Comisaría</h6></th>
+          <th><h6>Encargado</h6></th>
+
+          <th><h6>Turnos</h6></th>
+          <th><h6>Calendario</h6></th>
+          <th><h6>Rendir</h6></th>
+        </tr>
+        {% for adicional in adicionales %}
+        <tr>
+          <td>{{ adicional.numero }}</td>
+          <td>{{ adicional.nombre }}</td>
+          <td>{{ adicional.comisaria }}</td>
+          <td>{{ adicional.encargado }}</td>
+
+          {% if adicional.encargado|stringformat:"s" == user.username|stringformat:"s" %}
+            <td><a href="{% url 'agregar-turnos' adicional.pk %}">Agregar</a></td>
+            <td><a href="{% url 'calendario' adicional.pk today.year today.month %}">Ver</a></td>
+            {% if adicional.puede_rendir == True %}
+            <td><a href="{% url 'rendir-adicional' adicional.pk %}">Rendir</a></td>
+            {% else %}
+            <td></td>
+            {% endif %}
+          {% else %}
+            <td><a href="{% url 'agregar-turnos' adicional.pk %}">Ver</a></td>
+            <td><a href="{% url 'calendario' adicional.pk today.year today.month %}">Ver</a></td>
+            <td></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+{% else %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu cuenta está siendo revisada.</p>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock content %}

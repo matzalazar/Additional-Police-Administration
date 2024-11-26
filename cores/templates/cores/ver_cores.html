@@ -1,0 +1,119 @@
+{% extends 'administracion/base.html' %}
+
+{% block scripts_local %}
+
+<script>
+ $(function () {
+  $("#id_start_date").datetimepicker({
+      timepicker: false,
+      format: 'd/m/Y',
+  });
+ $.datetimepicker.setLocale('es');
+ });
+</script>
+
+<script>
+ $(function () {
+  $("#id_end_date").datetimepicker({
+    timepicker: false,
+    format: 'd/m/Y',
+  });
+ $.datetimepicker.setLocale('es');
+ });
+</script>
+
+{% endblock scripts_local %}
+
+{% block content %}
+{% if user.profile.esta_autorizado == True %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Ver horas CoReS</p>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+          <h6 align="center">-<a href="{% url 'agregar-cores' %}"> Cargar Cores</a></h6>
+          <h6 align="center">-<a href="{% url 'cupo-cores' %}"> Cupo Cores</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <form method="GET" autocomplete="off">
+            <input type="text" name="efectivo" value="" id="id_efectivo" /><br />
+            <div align="center" class="col-md-4 col-sm-4">
+              <h6>A partir del:<br />(inclusive)</h6> {{ myFilter.form.start_date }}
+            </div>
+            <div align="center" class="col-md-4 col-sm-4">
+              <h6>Hasta el:<br />(no inclusive)</h6> {{ myFilter.form.end_date }}
+            </div>
+            <div align="center" class="col-md-4 col-sm-4">
+              <h6>Tipo:<br /><br /></h6> {{ myFilter.form.tipo }}
+            </div>
+            <div align="center" class="col-md-12 col-sm-12">
+              <button type="submit">Buscar</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+  </div>
+
+<hr>
+
+  <div class="container">
+      <table>
+        <tr>
+          <th>Jerarquía</th>
+          <th>Legajo</th>
+          <th>Nombre</th>
+          <th>Desde</th>
+          <th>Hasta</th>
+          <th>Tipo</th>
+          <th>Horas</th>
+          <th>Borrar</th>
+        </tr>
+        {% for field in cores %}
+        <tr>
+          <td>{{ field.efectivo.efectivo_jerarquia }}</td>
+          <td>{{ field.efectivo.efectivo_legajo }}</td>
+          <td>{{ field.efectivo }}</td>
+          <td>{{ field.ingreso|date:'d/m/y - H:i' }}</td>
+          <td>{{ field.egreso|date:'d/m/y - H:i' }}</td>
+          <td>{{ field.tipo}}</td>
+          <td>{{ field.get_diff }}</td>
+          <td><a href="/deletecores/{{ field.id }}/">Borrar</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+  </div>
+
+</section>
+
+{% else %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu cuenta está siendo revisada.</p>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock content %}

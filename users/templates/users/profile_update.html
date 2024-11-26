@@ -1,0 +1,65 @@
+{% extends 'administracion/base.html' %}
+{% block content %}
+
+<section id="cores">
+  <div class="container">
+    <div class="row">
+
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu información de contacto</p>
+
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5>Mi perfil</h5>
+          <hr>
+          <h6>-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <form method="POST">
+            {% csrf_token %}
+            <div class="col-md-8 col-sm-8">
+              <h6 align="center">Email</h6>
+                {{ u_form.email }}
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <h6 align="center">Teléfono</h6>
+                {{ p_form.phone_number }}<br /><br />
+            </div>
+            <div class="col-md-4 col-sm-4">
+              <h6 align="center">Tipo de usuario</h6>
+                {{ p_form.tipo_usuario }}
+            </div>
+            <div class="col-md-8 col-sm-8">
+              <h6 align="center">Destino</h6>
+                {{ p_form.administrador_de }}
+            </div>
+            <div align="center" class="col-md-12 col-sm-12"><br />
+                {% if p_form.non_field_errors %}
+                  <h6 style="color:red">{{ p_form.non_field_errors | striptags }}</h6>
+                {% elif p_form.errors %}
+                  <h6 style="color:red">Ya existe un Administrador registrado para {{user.profile.administrador_de}}.</h6>
+                {% endif %}
+            </div>
+
+            <div align="center" class="col-md-12 col-sm-12">
+              <button type="submit" class="btn btn-success">Actualizar perfil</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+  </div>
+
+</section>
+
+{% endblock content %}

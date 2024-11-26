@@ -1,0 +1,49 @@
+{% extends 'administracion/base.html' %}
+
+{% block content %}
+
+<section id="polad">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'mis-mensajes' %}"> Volver a mis mensajes</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <h5 align="center">Nuevo Mensaje:</h5>
+          <hr>
+          <form method="POST">
+            {% csrf_token %}
+            <div align="center" class="col-md-4 col-sm-4">
+              <h6>Para:</h6> {{ form.destinatario }}
+            </div>
+            <div align="center" class="col-md-8 col-sm-8">
+              <h6>Mensaje:</h6> {{ form.mensaje }}
+            </div>
+            <div align="center" class="col-md-12 col-sm-12">
+              <button type="submit">Enviar</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+  </div>
+
+</section>
+
+{% endblock content %}

@@ -1,0 +1,155 @@
+{% extends 'administracion/base.html' %}
+
+{% block scripts_local %}
+
+<script>
+ $(function () {
+  $("#id_ingreso").datetimepicker({
+      format: 'd/m/Y H:i',
+  });
+  $.datetimepicker.setLocale('es');
+ });
+</script>
+
+<script>
+ $(function () {
+  $("#id_egreso").datetimepicker({
+      format: 'd/m/Y H:i',
+  });
+  $.datetimepicker.setLocale('es');
+ });
+</script>
+
+{% endblock scripts_local %}
+
+{% block content %}
+{% if user.profile.esta_autorizado == True %}
+{% if adicional.encargado == request.user or adicional.comisaria == request.user.profile.administrador_de %}
+
+<section id="polad">
+
+  <div class="container">
+    <div class="row">
+      <h4 align="center">{{ adicional.nombre }}</h4>
+      <p align="center">Turnos</p>
+    </div>
+  </div>
+
+<hr>
+<br />
+<br />
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <h5 align="center">Menú</h5>
+        <hr>
+        <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+        <br />
+      </div>
+
+{% if adicional.encargado|stringformat:"s" == user.username|stringformat:"s" %}
+
+      <div class="col-md-8 col-sm-8">
+        <form method="POST" autocomplete="off">
+          {% csrf_token %}
+          <div align="center" class="col-md-6 col-sm-4">
+            <h6>Ingreso</h6> {{ form.ingreso }}
+          </div>
+          <div align="center" class="col-md-6 col-sm-4">
+            <h6>Egreso</h6> {{ form.egreso }}
+          </div>
+          <div align="center" class="col-md-12 col-sm-4">
+            <br /><h6>Efectivo</h6> {{ form.efectivo }}
+          </div>
+          <div align="center" class="col-md-12 col-sm-4">
+            <button type="submit">Cargar</button>
+          </div>
+          <div align="center" class="col-md-12 col-sm-4">
+            <br /><h6 style="color:red">{{ errors }}<br /></h6>
+          </div>
+        </form>
+      </div>
+
+{% else %}
+
+<div class="col-md-8 col-sm-8">
+  <h5 align="center"><br /><br />Últimos turnos:</h5>
+</div>
+
+{% endif %}
+
+    </div>
+  </div>
+
+<hr>
+  <div class="container">
+    <div class="row">
+      <table>
+      {% for field in turnos %}
+        <tr>
+       	  <td>{{ forloop.revcounter }}</td>
+          <td>{{ field.efectivo.efectivo_jerarquia }}</td>
+          <td>{{ field.efectivo.efectivo_legajo }}</td>
+          <td>{{ field.efectivo }}</td>
+          <td>{{ field.ingreso|date:'d/m/y - H:i' }}</td>
+          <td>{{ field.egreso|date:'d/m/y - H:i' }}</td>
+          <td>{{ field.get_diff }}</td>
+          {% if adicional.encargado|stringformat:"s" == user.username|stringformat:"s" %}
+          <td><a href="/deleteturno/{{ field.id }}/">Borrar</a></td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </table>
+    </div>
+  </div>
+
+</section>
+
+{% else %}
+
+<div class="container">
+  <div class="row">
+    <h3 align="center">{{ user.username }}</h3>
+  </div>
+</div>
+
+<hr>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <h5 align="center">Menú</h5>
+        <hr>
+        <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+        <br />
+      </div>
+
+      <div class="col-md-8 col-sm-8">
+        <h5 align="center"><br /><br />No estás autorizado para ver esta sección.</h5>
+      </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+{% else %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu cuenta está siendo revisada.</p>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock content %}

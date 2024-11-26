@@ -1,0 +1,21 @@
+{% extends 'administracion/base.html' %}
+{% block content %}
+
+<section id="contact">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-12 col-sm-12">
+        <h2 align="center">Saliste de tu cuenta.</h2>
+      </div>
+
+      <div class="col-md-offset-4 col-md-4 col-sm-8">
+        <br /><br />
+        <h4 align="center"><a href="{% url 'login' %}">Volvé a ingresar.</a></h4>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

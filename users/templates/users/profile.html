@@ -1,0 +1,120 @@
+{% extends 'administracion/base.html' %}
+{% block content %}
+{% if user.profile.esta_autorizado == True %}
+
+  <div class="container">
+    <div class="row">
+
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu escritorio</p>
+
+    </div>
+
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+              <div class="col-md-4 col-sm-4">
+                  <div class="contact-detail">
+                      <div class="contact-detail-1">
+                          <h5>Mi perfil</h5>
+                          <hr>
+                          <h6>-<a href="{% url 'profile-update' %}"> Actualizar tu perfil</a></h6>
+                      </div>
+                      <br />
+                      <div class="contact-detail-1">
+                          <h5>Mis adicionales</h5>
+                          <hr>
+                          <h6>-<a href="{% url 'mis-adicionales' %}"> Mis Adicionales</a></h6>
+                          <h6>-<a href="{% url 'nuevo-adicional' %}"> Nuevo Adicional</a></h6>
+                      </div>
+                      <br />
+
+                      {% if user.profile.tipo_usuario == 'Administrador' %}
+
+                      <div class="contact-detail-1">
+                          <h5>Cores</h5>
+                          <hr>
+                          <h6>-<a href="{% url 'agregar-cores' %}"> Cargar Cores</a></h6>
+                          <h6>-<a href="{% url 'ver-cores' %}"> Ver Cores</a></h6>
+                          <h6>-<a href="{% url 'cupo-cores' %}"> Cupo / Rendición</a></h6>
+                      </div>
+                      <br />
+
+                      {% endif %}
+
+                      <div class="contact-detail-1">
+                          <h5>Mensajes</h5>
+                          <hr>
+                          <h6>-<a href="{% url 'mis-mensajes' %}"> Mis Mensajes</a></h6>
+                          <h6>-<a href="{% url 'nuevo-mensaje' %}"> Nuevo Mensaje</a></h6>
+                      </div>
+
+                  </div>
+              </div>
+
+              <div class="col-md-8 col-sm-8">
+                <div class="contact-detail-1">
+                    <h5>Últimos turnos PolAd:</h5>
+                    <hr>
+                    {% if show_turnos != '' %}
+                      <h6 style="color: grey">- {{ show_turnos }}</h6>
+                    {% else %}
+                      {% for turno in turnos %}
+                      <h6 style="color: grey">- {{ turno.ingreso|date:'d/m H:i' }} a {{ turno.egreso|date:'d/m H:i' }}, {{ turno.efectivo.efectivo_nombre }} en PolAd Nro. {{ turno.polad.numero }}.</h6>
+                      {% endfor %}
+                    {% endif %}
+                </div>
+                {% if user.profile.tipo_usuario == 'Administrador' %}
+                <br />
+                <div class="contact-detail-1">
+                    <h5>Últimas CoReS:</h5>
+                    <hr>
+                    {% if show_cores != '' %}
+                      <h6 style="color: grey">- {{ show_cores }}</h6>
+                    {% else %}
+                      {% for core in cores %}
+                      <h6 style="color: grey">- {{ core.ingreso|date:'d/m H:i' }} a {{ core.egreso|date:'d/m H:i' }}, {{ core.efectivo.efectivo_nombre }}.</h6>
+                      {% endfor %}
+                    {% endif %}
+                </div>
+                {% endif %}
+                <br />
+                <div class="contact-detail-1">
+                    <h5>Últimos mensajes:</h5>
+                    <hr>
+                    {% if show_mensajes != '' %}
+                      <h6 style="color: grey">- {{ show_mensajes }}</h6>
+                    {% else %}
+                      {% for mensaje in mensajes %}
+                        {% if "Mensaje automático." in mensaje.mensaje %}
+                        <h6 style="color: blue">- {{ mensaje.mensaje|truncatewords:5 }}.</h6>
+                        {% else %}
+                        <h6 style="color: grey">- {{ mensaje.remitente }} el día {{ mensaje.creado|date:'d/m' }} te escribió: {{ mensaje.mensaje|truncatewords:5 }}.</h6>
+                        {% endif %}
+                      {% endfor %}
+                    {% endif %}
+                </div>
+              </div>
+
+      </div>
+    </div>
+
+    {% else %}
+
+    <section id="cores">
+
+      <div class="container">
+        <div class="row">
+          <h3 align="center">{{ user.username }}</h3>
+          <p align="center">Tu cuenta está siendo revisada.</p>
+        </div>
+      </div>
+
+    {% endif %}
+    {% endblock content %}

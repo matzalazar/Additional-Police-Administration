@@ -1,0 +1,91 @@
+{% extends 'administracion/base.html' %}
+
+{% block content %}
+{% if adicional.encargado == request.user or adicional.comisaria == request.user.profile.administrador_de %}
+
+<section id="calendar">
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">{{ adicional.nombre }}</p>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+          <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <h5 align="center">2020</h5>
+          <hr>
+          <h6 align="center">
+          <a href="{% url 'calendario' adicional.pk 2020 01 %}">Enero</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 02 %}">Febrero</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 03 %}">Marzo</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 04 %}">Abril</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 05 %}">Mayo</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 06 %}">Junio</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 07 %}">Julio</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 08 %}">Agosto</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 09 %}">Septiembre</a>
+          <a href="{% url 'calendario' adicional.pk 2020 10 %}">Octubre</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 11 %}">Noviembre</a>,
+          <a href="{% url 'calendario' adicional.pk 2020 12 %}">Diciembre</a>.</h6>
+        </div>
+
+
+
+      </div>
+  </div>
+
+  <br />
+  <hr>
+
+  {{ calendar }}
+
+</section>
+
+{% else %}
+
+<div class="container">
+  <div class="row">
+    <h3 align="center">{{ user.username }}</h3>
+  </div>
+</div>
+
+<hr>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <h5 align="center">Menú</h5>
+        <hr>
+        <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+        <br />
+      </div>
+
+      <div class="col-md-8 col-sm-8">
+        <h5 align="center"><br /><br />No estás autorizado para ver esta sección.</h5>
+      </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock content %}

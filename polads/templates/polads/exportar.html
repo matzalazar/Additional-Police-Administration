@@ -1,0 +1,92 @@
+{% extends 'administracion/base.html' %}
+{% block content %}
+{% if adicional.encargado == request.user or adicional.comisaria == request.user.profile.administrador_de %}
+
+<section id="polad">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+    </div>
+  </div>
+
+  <hr>
+
+  <div align="center" class="container">
+    <h6>Estás por rendir <b style="color:red">{{ cant }} turnos</b> del servicio PolAd <b style="color:red">{{ adicional.nombre }}</b>.<br /><br />
+      El total es de <b style="color:red">{{ horas_totales }} horas</b>. Y el valor del depósito: <b style="color:red">$ {{ valor_100 }}</b>.<br /><br />
+      {% if show != "Parece que estás intentando rendir un adicional con turnos de meses distintos." %}
+      Corresponde al mes de <b style="color:red">{{ show }}</b>.<br /><br />
+      {% else %}
+      <b style="color:red">{{ show|upper }}</b><br /><br />
+      {% endif %}
+      Estos son los turnos filtrados que se generarán en la rendición. </h6><br />
+      <a type="rendir" href="{% url 'rendir-adicional' adicional.pk %}">Volver a filtrar</a>
+  </div>
+
+  <hr>
+
+  <div class="container">
+      <table>
+        <tr>
+          <th>Jerarquía</th>
+          <th>Legajo</th>
+          <th>Nombre</th>
+          <th>Desde</th>
+          <th>Hasta</th>
+          <th>Horas</th>
+        </tr>
+        {% for field in turnos %}
+        <tr>
+          <td>{{ field.efectivo.efectivo_jerarquia }}</td>
+          <td>{{ field.efectivo.efectivo_legajo }}</td>
+          <td>{{ field.efectivo }}</td>
+          <td>{{ field.ingreso|date:'d/m/y - H:i' }}</td>
+          <td>{{ field.egreso|date:'d/m/y - H:i' }}</td>
+          <td>{{ field.get_diff }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+  </div>
+
+  <div align="center" class="container">
+    {% if show != "Parece que estás intentando rendir un adicional con turnos de meses distintos." %}
+        <br /><br /><a type="rendir" href="{% url 'descargar' adicional.pk %}">RENDIR</a>
+    {% endif %}
+  </div>
+
+</section>
+
+{% else %}
+
+<div class="container">
+  <div class="row">
+    <h3 align="center">{{ user.username }}</h3>
+  </div>
+</div>
+
+<hr>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <h5 align="center">Menú</h5>
+        <hr>
+        <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+        <br />
+      </div>
+
+      <div class="col-md-8 col-sm-8">
+        <h5 align="center"><br /><br />No estás autorizado para ver esta sección.</h5>
+      </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock content %}

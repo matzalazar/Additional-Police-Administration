@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches and logs
+*.log
+
+# Ignore macOS system files
+.DS_Store
+
+# Django stuff:
+db.sqlite3  # Si ya no necesitas la base de datos de testeo local
+*.sqlite3
+media/
+staticfiles/
+
+# Virtual environment
+venv/
+env/
+
+# VS Code settings
+.vscode/
+
+# Django migrations
+**/migrations/*
+
+# Environments
+.env
+*.env

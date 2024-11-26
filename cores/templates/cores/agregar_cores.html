@@ -1,0 +1,121 @@
+{% extends 'administracion/base.html' %}
+
+{% block scripts_local %}
+
+<script>
+ $(function () {
+  $("#id_ingreso").datetimepicker({
+      format: 'd/m/Y H:i',
+  });
+  $.datetimepicker.setLocale('es');
+ });
+</script>
+
+<script>
+ $(function () {
+  $("#id_egreso").datetimepicker({
+      format: 'd/m/Y H:i',
+  });
+  $.datetimepicker.setLocale('es');
+ });
+</script>
+
+{% endblock scripts_local %}
+
+{% block content %}
+{% if user.profile.esta_autorizado == True %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Agregar horas CoReS</p>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+          <h6 align="center">-<a href="{% url 'ver-cores' %}"> Ver Cores</a></h6>
+          <h6 align="center">-<a href="{% url 'cupo-cores' %}"> Ver Cupo</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <form method="POST" autocomplete="off">
+          {% csrf_token %}
+              <input type="text" name="efectivo" value="" id="id_efectivo" /><br />
+              <div align="center" class="col-md-4 col-sm-4">
+                <h6>Ingreso:</h6> {{ form.ingreso }}
+              </div>
+              <div align="center" class="col-md-4 col-sm-4">
+                <h6>Egreso:</h6> {{ form.egreso }}
+              </div>
+              <div align="center" class="col-md-4 col-sm-4">
+                <h6>Tipo:</h6> {{ form.tipo }}
+              </div>
+              <div align="center" class="col-md-12 col-sm-12">
+                <button type="submit">Agregar</button>
+              </div>
+              <div align="center" class="col-md-12 col-sm-4">
+                <br /><h6 style="color:red">{{ errors }}</h6>
+              </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+<hr>
+
+    <div class="container">
+        <table>
+          <tr>
+            <th>Jerarquía</th>
+            <th>Legajo</th>
+            <th>Nombre</th>
+            <th>Desde</th>
+            <th>Hasta</th>
+            <th>Tipo</th>
+            <th>Horas</th>
+            <th>Borrar</th>
+          </tr>
+          {% for field in cores %}
+          <tr>
+            <td>{{ field.efectivo.efectivo_jerarquia }}</td>
+            <td>{{ field.efectivo.efectivo_legajo }}</td>
+            <td>{{ field.efectivo }}</td>
+            <td>{{ field.ingreso|date:'d/m/y - H:i'}}</td>
+            <td>{{ field.egreso|date:'d/m/y - H:i'}}</td>
+            <td>{{ field.tipo }}</td>
+            <td>{{ field.get_diff }}</td>
+            <td><a href="/deletecores/{{ field.id }}/">Borrar</a></td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+</section>
+
+{% else %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu cuenta está siendo revisada.</p>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock content %}

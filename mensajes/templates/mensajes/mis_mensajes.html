@@ -1,0 +1,75 @@
+{% extends 'administracion/base.html' %}
+
+{% block content %}
+
+<section id="contact">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+          <h6 align="center">-<a href="{% url 'nuevo-mensaje' %}"> Escribir mensaje</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <h5 align="center"><br /><br />Estos son tus mensajes:</h5>
+        </div>
+
+      </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-12 col-sm-12">
+        <table>
+          <tr>
+            <th style="width:15%"><h6>Remitente</h6></th>
+            <th style="width:15%"><h6>Fecha</h6></th>
+            <th style="width:55%"><h6>Mensaje</h6></th>
+            <th style="width:15%"><h6></h6></th>
+          </tr>
+          {% for mensaje in mensajes %}
+            {% if "Mensaje automático." in mensaje.mensaje %}
+          <tr>
+            <td style="color:blue">bot</td>
+            <td style="color:blue">{{ mensaje.creado|date:'d/m/y' }}</td>
+            <td style="color:blue">{{ mensaje.mensaje|truncatewords:12 }}</td>
+            <td><a href="/ver-mensaje/{{ mensaje.id }}/">Ver más</a></td>
+          </tr>
+            {% else %}
+          <tr>
+            <td>{{ mensaje.remitente }}</td>
+            <td>{{ mensaje.creado|date:'d/m/y' }}</td>
+            <td>{{ mensaje.mensaje|truncatewords:12 }}</td>
+            <td><a href="/ver-mensaje/{{ mensaje.id }}/">Ver más</a></td>
+          </tr>
+            {% endif %}
+          {% endfor %}
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+{% endblock content %}

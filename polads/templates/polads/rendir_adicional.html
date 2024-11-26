@@ -1,0 +1,172 @@
+{% extends 'administracion/base.html' %}
+
+{% block scripts_local %}
+
+<script>
+ $(function () {
+  $("#id_start_date").datetimepicker({
+      timepicker: false,
+      format: 'd/m/Y',
+  });
+  $.datetimepicker.setLocale('es');
+ });
+</script>
+
+<script>
+ $(function () {
+  $("#id_end_date").datetimepicker({
+    timepicker: false,
+    format: 'd/m/Y',
+  });
+  $.datetimepicker.setLocale('es');
+ });
+</script>
+
+{% endblock scripts_local %}
+
+{% block content %}
+
+{% if adicional.encargado == request.user or adicional.comisaria == request.user.profile.administrador_de %}
+
+{% if adicional.puede_rendir == False %}
+
+<div class="container">
+  <div class="row">
+    <h3 align="center">{{ user.username }}</h3>
+  </div>
+</div>
+
+<hr>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <h5 align="center">Menú</h5>
+        <hr>
+        <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+        <br />
+      </div>
+
+      <div class="col-md-8 col-sm-8">
+        <h5 align="center"><br /><br />Momentáneamente estás autorizado a ver esta sección.</h5>
+      </div>
+
+    </div>
+</div>
+
+{% else %}
+
+<section id="polad">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ adicional.nombre }}</h3>
+      <p align="center">Rendir</p>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+          <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <form method="GET" autocomplete="off">
+            <div align="center" class="col-md-4 col-sm-4">
+              <h6>A partir del:<br />(inclusive)</h6> {{ myFilter.form.start_date }}
+            </div>
+            <div align="center" class="col-md-4 col-sm-4">
+              <h6>Hasta el:<br />(no inclusive)</h6> {{ myFilter.form.end_date }}
+            </div>
+            <div align="center" class="col-md-4 col-sm-4">
+              <button type="submit">Filtrar</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+<hr>
+
+    <div class="container">
+        <table>
+          <tr>
+            <th>Jerarquía</th>
+            <th>Legajo</th>
+            <th>Nombre</th>
+            <th>Desde</th>
+            <th>Hasta</th>
+            <th>Horas</th>
+          </tr>
+          {% for field in turnos %}
+          <tr>
+            <td>{{ field.efectivo.efectivo_jerarquia }}</td>
+            <td>{{ field.efectivo.efectivo_legajo }}</td>
+            <td>{{ field.efectivo }}</td>
+            <td>{{ field.ingreso|date:'d/m/y - H:i' }}</td>
+            <td>{{ field.egreso|date:'d/m/y - H:i' }}</td>
+            <td>{{ field.get_diff }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div align="center" class="container">
+          <br />
+          <br />
+          <a type="rendir" href="{% url 'exportar' adicional.pk %}">GENERAR RENDICIÓN</a>
+      </div>
+
+
+</section>
+
+{% endif %}
+
+{% else %}
+
+<div class="container">
+  <div class="row">
+    <h3 align="center">{{ user.username }}</h3>
+  </div>
+</div>
+
+<hr>
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+
+      <div class="col-md-4 col-sm-4">
+        <h5 align="center">Menú</h5>
+        <hr>
+        <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+        <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a Mis Adicionales</a></h6>
+        <br />
+      </div>
+
+      <div class="col-md-8 col-sm-8">
+        <h5 align="center"><br /><br />No estás autorizado para ver esta sección.</h5>
+      </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock content %}

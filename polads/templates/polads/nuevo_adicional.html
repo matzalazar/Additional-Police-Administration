@@ -1,0 +1,98 @@
+{% extends 'administracion/base.html' %}
+
+{% block content %}
+{% if user.profile.esta_autorizado == True %}
+
+<section id="polad">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Agregar nuevo servicio de Policía Adicional</p>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+          <h6 align="center">-<a href="{% url 'mis-adicionales' %}"> Volver a mis adicionales</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <form method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+              <div align="center" class="col-md-4 col-sm-4">
+                <h6>Nro. PolAd</h6> {{ form.numero }}<br />
+              </div>
+              <div align="center" class="col-md-8 col-sm-8">
+                <h6>Nombre</h6> {{ form.nombre }}<br />
+              </div>
+            </div>
+
+            <div class="row">
+              <div align="center" class="col-md-8 col-sm-8">
+                <h6>Dirección</h6> {{ form.domicilio }}<br />
+              </div>
+              <div align="center" class="col-md-4 col-sm-4">
+                <h6>Ciudad</h6> {{ form.localidad }}<br />
+              </div>
+            </div>
+
+            <div class="row">
+              <div align="center" class="col-md-8 col-sm-8">
+                <h6>Entidad Contratante</h6> {{ form.entidad_contratante }}<br />
+              </div>
+              <div align="center" class="col-md-4 col-sm-4">
+                <h6>Categoría</h6> {{ form.categoria }}<br />
+              </div>
+            </div>
+
+            <div class="row">
+              <div align="center" class="col-md-4 col-sm-4">
+                <h6>Cuenta Corriente</h6> {{ form.cuenta_corriente }}<br />
+              </div>
+              <div align="center" class="col-md-8 col-sm-8">
+                <h6>Comisaría</h6> {{ form.comisaria }}<br />
+              </div>
+            </div>
+
+            <br /><br />
+
+            <div class="row">
+              <div align="center" class="col-md-12 col-sm-12">
+                    <button type="submit">Alta de PolAd</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+</section>
+
+{% else %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu cuenta está siendo revisada.</p>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock content %}

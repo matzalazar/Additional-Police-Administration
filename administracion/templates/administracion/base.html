@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="CatorceVeces">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+        <title>Mis Adicionales</title>
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+        <!-- Main css -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+        <!-- Animate CSS -->
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+
+        <!-- Font Awesome Icons CSS -->
+        <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+        <!-- Magnific-popup CSS -->
+        <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+
+        <!-- Google Fonts Link -->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700,900" rel="stylesheet">
+
+        <!-- CSS file -->
+        <link rel="stylesheet" href="{% static 'css/easy-autocomplete.css' %}">
+
+        <!-- DateTimePicker -->
+        <link rel="stylesheet" href="{% static 'css/jquery.datetimepicker.min.css' %}">
+
+    </head>
+    <body>
+
+        <!-- Navigation Section -->
+
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_authenticated %}
+                          <li><a href="{% url 'profile' %}"><b> Mi escritorio</b></a></li>
+                          <li><a href="{% url 'contacto' %}"> Contacto</a></li>
+                          {% if user.profile.esta_autorizado %}
+                          <li><a href="{% url 'dudas' %}"> Dudas</a></li>
+                          {% endif %}
+                          <li><a href="{% url 'logout' %}"> Cerrar Sesión</a></li>
+                        {% else %}
+                          <li class="active"><a href="{% url 'home-page' %}">Home</a></li>
+                          <li><a href="{% url 'login' %}"> Iniciar Sesión</a></li>
+                          <li><a href="{% url 'register' %}"> Registrarse</a></li>
+                          <li><a href="{% url 'contacto' %}"> Contacto</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Block Content -->
+        {% block content %}{% endblock content %}
+
+        <!-- Footer Section -->
+
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 text-center">
+                        <p class="small">github.com/matzalazar</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- SCRIPTS -->
+
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'js/wow.min.js' %}"></script>
+        <script src="{% static 'js/isotope.js' %}"></script>
+        <script src="{% static 'js/imagesloaded.min.js' %}"></script>
+        <script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+        <script src="{% static 'js/magnific-popup-options.js' %}"></script>
+        <script src="{% static 'js/custom.js' %}"></script>
+
+        <!-- Using jQuery with a CDN -->
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+
+        <!-- JS AutoComplete file -->
+        <script src="{% static 'js/jquery.easy-autocomplete.min.js' %}"></script>
+
+        <!-- JS DateTimePicker file -->
+        <script src="{% static 'js/jquery.datetimepicker.full.js' %}"></script>
+
+        <script>
+          var options = {
+            url: "{% url 'send_json' %}",
+            placeholder: "Efectivo",
+            getValue: "nombre",
+            list: {
+              match: {
+                enabled: true
+              }
+            },
+            template: {
+              type: "custom",
+              method: function(value, item) {
+                return value + " " + "<small style=color:grey;> - " + item.jerarquia + " - " + item.legajo + "</small>";
+              }
+            }
+          };
+
+          $("#id_efectivo").easyAutocomplete(options);
+        </script>
+
+        {% block scripts_local %}{% endblock scripts_local %}
+
+    </body>
+</html>

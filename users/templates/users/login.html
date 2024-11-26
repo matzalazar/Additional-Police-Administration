@@ -1,0 +1,43 @@
+{% extends 'administracion/base.html' %}
+{% block content %}
+
+<section id="contact">
+
+  <div class="container">
+    <div class="row">
+
+      <div align="center" class="col-md-offset-4 col-md-4 col-sm-8">
+        <h2>Iniciar Sesión:</h2>  <hr><br /><br />
+      </div>
+
+      <div align="center" class="col-md-offset-4 col-md-4 col-sm-8">
+        <form method="POST">
+          {% csrf_token %}
+          {% for field in form %}<br>
+              {{ field.label_tag }}<br />
+              {{ field }}
+              {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+              {% endif %}<br>
+              {% for error in field.errors %}
+                <br /><small style="color: red">{{ error }}</small><br />
+              {% endfor %}
+          {% endfor %}<br><br>
+              <button type="submit" class="btn btn-success" >Ingresar</button>
+        </form>
+      </div>
+
+      <div class="col-md-offset-4 col-md-4 col-sm-8">
+        <br /><br />
+        <h6 align="center">¿Todavía no tenés una cuenta? <a href="{% url 'register' %}">Registrate.</a></h6>
+      </div>
+      <div class="col-md-offset-4 col-md-4 col-sm-8">
+        <h6 align="center"><a href="{% url 'password_reset' %}">¿Olvidaste tu contraseña?</a></h6>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+{% endblock content %}

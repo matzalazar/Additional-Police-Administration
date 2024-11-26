@@ -1,0 +1,90 @@
+{% extends 'administracion/base.html' %}
+
+{% load timedelta_filter %}
+
+{% block content %}
+{% if user.profile.esta_autorizado == True %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Cupo de horas CoReS</p>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'profile' %}"> Volver a mi escritorio</a></h6>
+          <h6 align="center">-<a href="{% url 'agregar-cores' %}"> Cargar Cores</a></h6>
+          <h6 align="center">-<a href="{% url 'ver-cores' %}"> Ver Cores</a></h6>
+          <br />
+        </div>
+
+        <div class="col-md-8 col-sm-8">
+          <h5 align="center">Mes de {{ today|date:'F' }} de {{ today|date:'Y' }}: </h5>
+          <hr>
+        </div>
+        <div class="col-md-4 col-sm-4">
+          <h6 align="center">Cores Operativas: {{ cupo_operativas }}</h6>
+          <h6 align="center">Cores Operativas Choferes: {{ cupo_operativas_choferes }}</h6>
+          <h6 align="center">Cores No Operativas: {{ cupo_no_operativas }}</h6>
+        </div>
+        <div class="col-md-4 col-sm-4">
+          <br />
+          <a href="{% url 'rendir-cores' %}"><h6 align="center">RENDIR CORES</h6></a>
+          <br />
+        </div>
+
+      </div>
+    </div>
+
+<hr>
+
+    <div class="container">
+        <table>
+          <tr>
+            <th>Item</th>
+            <th>Jerarquía</th>
+            <th>Legajo</th>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Horas</th>
+          </tr>
+          {% for field in cores|dictsortreversed:"tipo" %}
+          <tr>
+            <td>{{ field.efectivo__efectivo_item }}</td>
+            <td>{{ field.efectivo__efectivo_jerarquia }}</td>
+            <td>{{ field.efectivo__efectivo_legajo }}</td>
+            <td>{{ field.efectivo__efectivo_nombre }}</td>
+            <td>{{ field.tipo}}</td>
+            <td>{{ field.horas|timedelta:"{hours_total}" }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+</section>
+
+{% else %}
+
+<section id="cores">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+      <p align="center">Tu cuenta está siendo revisada.</p>
+    </div>
+  </div>
+
+{% endif %}
+{% endblock content %}

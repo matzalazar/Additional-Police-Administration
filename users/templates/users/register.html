@@ -1,0 +1,35 @@
+{% extends 'administracion/base.html' %}
+{% block content %}
+
+<section id="contact">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-md-offset-4 col-md-4 col-sm-8">
+        <h2 align="center">Registrarse:</h2>  <hr><br /><br />
+      </div>
+
+      <div class="col-md-offset-4 col-md-4 col-sm-8">
+        <form align="center" method="POST">
+          {% csrf_token %}
+          {% for field in form %}<br>
+              {{ field.label_tag }}
+              {{ field }}
+              {% for error in field.errors %}
+                <small style="color: red">{{ error }}</small><br />
+              {% endfor %}
+          {% endfor %}<br><br>
+          <button type="submit" class="btn btn-success">Darme de alta</button>
+        </form>
+      </div>
+
+      <div class="col-md-offset-4 col-md-4 col-sm-8">
+        <br /><br />
+        <h6 align="center">¿Ya tenés una cuenta? <a href="{% url 'login' %}">Iniciá sesión.</a></h6>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}

@@ -1,0 +1,46 @@
+{% extends 'administracion/base.html' %}
+
+{% block content %}
+
+<section id="contact">
+
+  <div class="container">
+    <div class="row">
+      <h3 align="center">{{ user.username }}</h3>
+    </div>
+  </div>
+
+  <hr>
+  <br />
+  <br />
+
+  <div class="container">
+      <div class="row">
+
+        <div class="col-md-4 col-sm-4">
+          <h5 align="center">Menú</h5>
+          <hr>
+          <h6 align="center">-<a href="{% url 'mis-mensajes' %}"> Volver a mis mensajes</a></h6>
+          <br />
+        </div>
+        {% if "Mensaje automático." not in mensaje_completo.mensaje %}
+          <div align="center" class="col-md-8 col-sm-8">
+            <h5>Remitente</h5>{{ mensaje_completo.remitente }}
+          </div>
+
+          <div align="center" class="col-md-8 col-sm-8">
+            <br /><br /><h5>Mensaje</h5>{{ mensaje_completo.mensaje }}
+          </div>
+        {% else %}
+          <div align="center" class="col-md-8 col-sm-8">
+            <h5>Mensaje</h5>{{ mensaje_completo.mensaje }}
+          </div>
+        {% endif %}
+
+
+      </div>
+  </div>
+
+</section>
+
+{% endblock content %}

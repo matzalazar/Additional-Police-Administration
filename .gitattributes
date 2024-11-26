@@ -1,0 +1,13 @@
+# Ignorar archivos JavaScript y CSS en el cálculo del lenguaje
+*.js linguist-language=ignore
+*.css linguist-language=ignore
+
+# Contar los archivos HTML como HTML
+*.html linguist-language=HTML
+
+# Asegurar que los archivos Python se cuenten correctamente
+*.py linguist-language=Python
+
+# Ignorar dependencias de terceros
+/static/js/* linguist-vendored
+/static/css/* linguist-vendored
